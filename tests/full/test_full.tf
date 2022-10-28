@@ -19,13 +19,18 @@ resource "aci_rest_managed" "fvTenant" {
 }
 
 module "main" {
-  source = "../.."
-  name   = "TEST_MINIMAL"
-  tenant = aci_rest_managed.fvTenant.content.name
+  source       = "../.."
+  name         = "TEST_FULL"
+  tenant       = aci_rest_managed.fvTenant.content.name
+  description  = "My BGP Peer Prefix Policy"
+  action       = "restart"
+  max_prefixes = 10000
+  restart_time = 1234
+  threshold    = 90
 }
 
 data "aci_rest_managed" "bgpPeerPfxPol" {
-  dn = "uni/tn-${aci_rest_managed.fvTenant.content.name}/bgpPfxP-TEST_MINIMAL"
+  dn = "uni/tn-${aci_rest_managed.fvTenant.content.name}/bgpPfxP-TEST_FULL"
 
   depends_on = [module.main]
 }
@@ -36,36 +41,36 @@ resource "test_assertions" "bgpPeerPfxPol" {
   equal "name" {
     description = "name"
     got         = data.aci_rest_managed.bgpPeerPfxPol.content.name
-    want        = "TEST_MINIMAL"
+    want        = "TEST_FULL"
   }
 
   equal "descr" {
     description = "descr"
     got         = data.aci_rest_managed.bgpPeerPfxPol.content.descr
-    want        = ""
+    want        = "My BGP Peer Prefix Policy"
   }
 
   equal "action" {
     description = "action"
     got         = data.aci_rest_managed.bgpPeerPfxPol.content.action
-    want        = "reject"
+    want        = "restart"
   }
 
   equal "maxPfx" {
     description = "maxPfx"
     got         = data.aci_rest_managed.bgpPeerPfxPol.content.maxPfx
-    want        = "20000"
+    want        = "10000"
   }
 
   equal "restartTime" {
     description = "restartTime"
     got         = data.aci_rest_managed.bgpPeerPfxPol.content.restartTime
-    want        = "infinite"
+    want        = "1234"
   }
 
   equal "thresh" {
     description = "thresh"
     got         = data.aci_rest_managed.bgpPeerPfxPol.content.thresh
-    want        = "75"
+    want        = "90"
   }
 }

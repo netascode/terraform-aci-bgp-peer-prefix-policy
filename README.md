@@ -1,23 +1,27 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-scaffolding/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-scaffolding/actions/workflows/test.yml)
+[![Tests](https://github.com/netascode/terraform-aci-bgp-peer-prefix-policy/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-scaffolding/actions/workflows/test.yml)
 
-# Terraform ACI Scaffolding Module
+# Terraform ACI BGP Peer Prefix Policy Module
 
-Description
+Manages ACI BGP Peer Prefix Policy
 
 Location in GUI:
-`Tenants` » `XXX`
+`Tenants` » `XXX` » `Policies` » `Protocol` » `BGP` » `BGP Peer Prefix`
 
 ## Examples
 
 ```hcl
-module "aci_scaffolding" {
-  source  = "netascode/scaffolding/aci"
+module "aci_bgp_peer_prefix_policy" {
+  source  = "netascode/bgp-peer-prefix-policy/aci"
   version = ">= 0.0.1"
 
-  name        = "ABC"
-  alias       = "ABC-ALIAS"
-  description = "My Description"
+  name         = "ABC"
+  tenant       = "TEN1"
+  description  = "My BGP Peer Prefix Policy"
+  action       = "restart"
+  max_prefixes = 10000
+  restart_time = 5000
+  threshold    = 90
 }
 ```
 

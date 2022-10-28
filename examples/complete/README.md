@@ -1,5 +1,5 @@
 <!-- BEGIN_TF_DOCS -->
-# BGP Peer Prefix Example
+# BGP Peer Prefix Policy Example
 
 To run this example you need to execute:
 

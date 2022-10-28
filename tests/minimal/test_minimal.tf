@@ -13,19 +13,19 @@ terraform {
   }
 }
 
-# resource "aci_rest_managed" "fvTenant" {
-#   dn         = "uni/tn-TF"
-#   class_name = "fvTenant"
-# }
+resource "aci_rest_managed" "fvTenant" {
+  dn         = "uni/tn-TF"
+  class_name = "fvTenant"
+}
 
 module "main" {
   source = "../.."
   name   = "TEST_MINIMAL"
-  tenant = "TF"
+  tenant = aci_rest_managed.fvTenant.content.name
 }
 
 data "aci_rest_managed" "bgpPeerPfxPol" {
-  dn = "uni/tn-TF/bgpPfxP-TEST_MINIMAL"
+  dn = "uni/tn-${aci_rest_managed.fvTenant.content.name}/bgpPfxP-TEST_MINIMAL"
 
   depends_on = [module.main]
 }
@@ -39,33 +39,33 @@ resource "test_assertions" "bgpPeerPfxPol" {
     want        = "TEST_MINIMAL"
   }
 
-  # equal "descr" {
-  #   description = "descr"
-  #   got         = data.aci_rest_managed.bgpPeerPfxPol.content.descr
-  #   want        = ""
-  # }
+  equal "descr" {
+    description = "descr"
+    got         = data.aci_rest_managed.bgpPeerPfxPol.content.descr
+    want        = ""
+  }
 
-  # equal "action" {
-  #   description = "action"
-  #   got         = data.aci_rest_managed.bgpPeerPfxPol.content.action
-  #   want        = "reject"
-  # }
+  equal "action" {
+    description = "action"
+    got         = data.aci_rest_managed.bgpPeerPfxPol.content.action
+    want        = "reject"
+  }
 
-  # equal "maxPfx" {
-  #   description = "maxPfx"
-  #   got         = data.aci_rest_managed.bgpPeerPfxPol.content.maxPfx
-  #   want        = "20000"
-  # }
+  equal "maxPfx" {
+    description = "maxPfx"
+    got         = data.aci_rest_managed.bgpPeerPfxPol.content.maxPfx
+    want        = "20000"
+  }
 
-  # equal "restartTime" {
-  #   description = "restartTime"
-  #   got         = data.aci_rest_managed.bgpPeerPfxPol.content.restartTime
-  #   want        = "infinite"
-  # }
+  equal "restartTime" {
+    description = "restartTime"
+    got         = data.aci_rest_managed.bgpPeerPfxPol.content.restartTime
+    want        = "infinite"
+  }
 
-  # equal "thresh" {
-  #   description = "thresh"
-  #   got         = data.aci_rest_managed.bgpPeerPfxPol.content.thresh
-  #   want        = "75"
-  # }
+  equal "thresh" {
+    description = "thresh"
+    got         = data.aci_rest_managed.bgpPeerPfxPol.content.thresh
+    want        = "75"
+  }
 }

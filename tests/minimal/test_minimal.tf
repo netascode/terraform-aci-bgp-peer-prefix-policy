@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 1.0.0"
+  required_version = ">= 1.3.0"
 
   required_providers {
     test = {
@@ -13,36 +13,59 @@ terraform {
   }
 }
 
+# resource "aci_rest_managed" "fvTenant" {
+#   dn         = "uni/tn-TF"
+#   class_name = "fvTenant"
+# }
+
 module "main" {
   source = "../.."
-
-  name = "ABC"
+  name   = "TEST_MINIMAL"
+  tenant = "TF"
 }
 
-data "aci_rest_managed" "fvTenant" {
-  dn = "uni/tn-ABC"
+data "aci_rest_managed" "bgpPeerPfxPol" {
+  dn = "uni/tn-TF/bgpPfxP-TEST_MINIMAL"
 
   depends_on = [module.main]
 }
 
-resource "test_assertions" "fvTenant" {
-  component = "fvTenant"
+resource "test_assertions" "bgpPeerPfxPol" {
+  component = "bgpPeerPfxPol"
 
   equal "name" {
     description = "name"
-    got         = data.aci_rest_managed.fvTenant.content.name
-    want        = "ABC"
+    got         = data.aci_rest_managed.bgpPeerPfxPol.content.name
+    want        = "TEST_MINIMAL"
   }
 
-  equal "nameAlias" {
-    description = "nameAlias"
-    got         = data.aci_rest_managed.fvTenant.content.nameAlias
-    want        = ""
-  }
+  # equal "descr" {
+  #   description = "descr"
+  #   got         = data.aci_rest_managed.bgpPeerPfxPol.content.descr
+  #   want        = ""
+  # }
 
-  equal "descr" {
-    description = "descr"
-    got         = data.aci_rest_managed.fvTenant.content.descr
-    want        = ""
-  }
+  # equal "action" {
+  #   description = "action"
+  #   got         = data.aci_rest_managed.bgpPeerPfxPol.content.action
+  #   want        = "reject"
+  # }
+
+  # equal "maxPfx" {
+  #   description = "maxPfx"
+  #   got         = data.aci_rest_managed.bgpPeerPfxPol.content.maxPfx
+  #   want        = "20000"
+  # }
+
+  # equal "restartTime" {
+  #   description = "restartTime"
+  #   got         = data.aci_rest_managed.bgpPeerPfxPol.content.restartTime
+  #   want        = "infinite"
+  # }
+
+  # equal "thresh" {
+  #   description = "thresh"
+  #   got         = data.aci_rest_managed.bgpPeerPfxPol.content.thresh
+  #   want        = "75"
+  # }
 }

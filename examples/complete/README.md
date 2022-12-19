@@ -14,7 +14,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 ```hcl
 module "aci_bgp_peer_prefix_policy" {
   source  = "netascode/bgp-peer-prefix-policy/aci"
-  version = ">= 0.0.1"
+  version = ">= 0.1.0"
 
   name         = "ABC"
   tenant       = "TEN1"

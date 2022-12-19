@@ -1,5 +1,5 @@
 variable "tenant" {
-  description = "BGP Peer Prefix Policy's Tenant name."
+  description = "Tenant name."
   type        = string
 
   validation {
@@ -9,7 +9,7 @@ variable "tenant" {
 }
 
 variable "name" {
-  description = "BGP Peer Prefix Policy name."
+  description = "BGP peer prefix policy name."
   type        = string
 
   validation {
@@ -18,9 +18,8 @@ variable "name" {
   }
 }
 
-
 variable "description" {
-  description = "BGP Peer Prefix Policy description."
+  description = "BGP peer prefix policy description."
   type        = string
   default     = ""
 
@@ -31,7 +30,7 @@ variable "description" {
 }
 
 variable "action" {
-  description = "BGP Peer Prefix Policy action. Valid values are `reject`, `log`, `restart` or `shut`."
+  description = "BGP peer prefix policy action. Valid values are `reject`, `log`, `restart` or `shut`."
   type        = string
   default     = "reject"
 
@@ -42,7 +41,7 @@ variable "action" {
 }
 
 variable "max_prefixes" {
-  description = "BGP Peer Prefix Policy Maximun number of Prefixes. Allowed values: 1-300000.."
+  description = "BGP peer prefix policy maximun number of prefixes. Allowed values: 1-300000."
   type        = number
   default     = 20000
 
@@ -53,7 +52,7 @@ variable "max_prefixes" {
 }
 
 variable "restart_time" {
-  description = "BGP Peer Prefix Policy Restart Time. Allowed values are `infinite` or a number between 1 and 65535."
+  description = "BGP peer prefix policy restart time. Allowed values are `infinite` or a number between 1 and 65535."
   type        = string
   default     = "infinite"
 
@@ -63,9 +62,8 @@ variable "restart_time" {
   }
 }
 
-
 variable "threshold" {
-  description = "BGP Peer Prefix Policy Threshold. Allowed values: 1 and 100."
+  description = "BGP peer prefix policy threshold. Allowed values: 1 and 100."
   type        = number
   default     = 75
 

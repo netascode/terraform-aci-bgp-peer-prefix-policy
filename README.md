@@ -1,23 +1,27 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-scaffolding/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-scaffolding/actions/workflows/test.yml)
+[![Tests](https://github.com/netascode/terraform-aci-bgp-peer-prefix-policy/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-scaffolding/actions/workflows/test.yml)
 
-# Terraform ACI Scaffolding Module
+# Terraform ACI BGP Peer Prefix Policy Module
 
-Description
+Manages ACI BGP Peer Prefix Policy
 
 Location in GUI:
-`Tenants` » `XXX`
+`Tenants` » `XXX` » `Policies` » `Protocol` » `BGP` » `BGP Peer Prefix`
 
 ## Examples
 
 ```hcl
-module "aci_scaffolding" {
-  source  = "netascode/scaffolding/aci"
+module "aci_bgp_peer_prefix_policy" {
+  source  = "netascode/bgp-peer-prefix-policy/aci"
   version = ">= 0.0.1"
 
-  name        = "ABC"
-  alias       = "ABC-ALIAS"
-  description = "My Description"
+  name         = "ABC"
+  tenant       = "TEN1"
+  description  = "My BGP Peer Prefix Policy"
+  action       = "restart"
+  max_prefixes = 10000
+  restart_time = 5000
+  threshold    = 90
 }
 ```
 
@@ -25,7 +29,7 @@ module "aci_scaffolding" {
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
 | <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.0.0 |
 
 ## Providers
@@ -38,20 +42,24 @@ module "aci_scaffolding" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_name"></a> [name](#input\_name) | Tenant name. | `string` | n/a | yes |
-| <a name="input_alias"></a> [alias](#input\_alias) | Tenant alias. | `string` | `""` | no |
-| <a name="input_description"></a> [description](#input\_description) | Tenant description. | `string` | `""` | no |
+| <a name="input_tenant"></a> [tenant](#input\_tenant) | BGP Peer Prefix Policy's Tenant name. | `string` | n/a | yes |
+| <a name="input_name"></a> [name](#input\_name) | BGP Peer Prefix Policy name. | `string` | n/a | yes |
+| <a name="input_description"></a> [description](#input\_description) | BGP Peer Prefix Policy description. | `string` | `""` | no |
+| <a name="input_action"></a> [action](#input\_action) | BGP Peer Prefix Policy action. Valid values are `reject`, `log`, `restart` or `shut`. | `string` | `"reject"` | no |
+| <a name="input_max_prefixes"></a> [max\_prefixes](#input\_max\_prefixes) | BGP Peer Prefix Policy Maximun number of Prefixes. Allowed values: 1-300000.. | `number` | `20000` | no |
+| <a name="input_restart_time"></a> [restart\_time](#input\_restart\_time) | BGP Peer Prefix Policy Restart Time. Allowed values are `infinite` or a number between 1 and 65535. | `string` | `"infinite"` | no |
+| <a name="input_threshold"></a> [threshold](#input\_threshold) | BGP Peer Prefix Policy Threshold. Allowed values: 1 and 100. | `number` | `75` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_dn"></a> [dn](#output\_dn) | Distinguished name of `fvTenant` object. |
-| <a name="output_name"></a> [name](#output\_name) | Tenant name. |
+| <a name="output_dn"></a> [dn](#output\_dn) | Distinguished name of `bgpPeerPfxPol` object. |
+| <a name="output_name"></a> [name](#output\_name) | BGP Peer Prefix Policy name. |
 
 ## Resources
 
 | Name | Type |
 |------|------|
-| [aci_rest_managed.fvTenant](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.bgpPeerPfxPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 <!-- END_TF_DOCS -->
